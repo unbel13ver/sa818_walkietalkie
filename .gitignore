@@ -31,3 +31,7 @@ sa818config
 
 # Debug files
 *.dSYM/
+
+# Configuration files
+*.conf
+*.cfg
