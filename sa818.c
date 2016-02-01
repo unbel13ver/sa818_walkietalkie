@@ -107,7 +107,7 @@ int32_t main(int argc, char *argv[])
 		set_interface_attribs(fd, B9600, 0, 1);
 	}
 
-	printf("Configuring sa818 module, wait...\n");
+	printf("Configuring sa818 module, wait...\n\n");
 
 	sprintf(transmit, "%s\r\n", DMOCONNECT);
 	send_command(fd, transmit, received);
@@ -149,9 +149,9 @@ int32_t main(int argc, char *argv[])
 	send_command(fd, transmit, received);
 	if (EXIT_SUCCESS != check_command_result(received))
 	{
-		printf("\nRadiochannel at the %3.4f MHz is NOT FOUND!\n\n", avail_args.scan_freq);
+		printf("Radiochannel at the %3.4f MHz is NOT FOUND!\n", avail_args.scan_freq);
 	} else {
-		printf("\nRadiochannel at the %3.4f MHz is FOUND!\n\n", avail_args.scan_freq);
+		printf("Radiochannel at the %3.4f MHz is FOUND!\n", avail_args.scan_freq);
 	}
 
 	sprintf(transmit, "%s=%d\r\n", DMOSETVOLUME, avail_args.volume);
@@ -182,8 +182,7 @@ int32_t main(int argc, char *argv[])
 
 	if (true == success)
 	{
-		printf("sa818-V module configuration successfull!\n");
-		printf("Writing configuration to the %s\n", conf_file);
+		printf("\nsa818-V module configuration successfull!\nWriting configuration to the %s\n", conf_file);
 		write_config_file(conf_file, &avail_args);
 	}
 
@@ -400,13 +399,9 @@ static inline void clear_buff(char *buf)
 
 static void send_command(int32_t fdesc, char *tbuf, char *rbuf)
 {
-	if (!debug_flag)
-	{
-		write(fdesc, tbuf, strlen(tbuf));
-		DELAY_TIME;
-		read(fdesc, rbuf, BUFFERSIZE);
-		DELAY_TIME;
-	} else {
-		printf("%s\n", tbuf);
-	}
+	printf("%s", tbuf);
+	write(fdesc, tbuf, strlen(tbuf));
+	DELAY_TIME;
+	read(fdesc, rbuf, BUFFERSIZE);
+	DELAY_TIME;
 }
