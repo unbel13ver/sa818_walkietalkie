@@ -278,7 +278,7 @@ static int32_t get_parameters_from_args(int ac, char *av[], struct avail_args_t 
 
 static int32_t check_config(const char *cfg_name, struct avail_args_t *avargs)
 {
-	FILE *last_config = fopen(cfg_name, "r+");
+	FILE *last_config = fopen(cfg_name, "a+");
 	int32_t read_index = 0;
 	int32_t temp_bool_bw = 0;
 	int32_t temp_bool_tail = 0;
