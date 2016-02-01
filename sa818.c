@@ -51,13 +51,21 @@ static int32_t 	debug_flag = 0;
 static int32_t 	rssi_flag = 0;
 static int32_t 	version_flag = 0;
 
+/* Serial port configuration */
 static int32_t 	set_interface_attribs(int fd, int speed, int parity, int should_block);
-static void 	exit_serial_port_not_specified(void);
+/* Put a string with warning and exit */
+static inline void 	exit_serial_port_not_specified(void);
+/* Check answer from module*/
 static int32_t 	check_command_result(char *buf);
+/* Wrapper for memset(0) */
 static inline void 	clear_buff(char *buf);
+/* Send command located in tbuf to module */
 static void 	send_command(int32_t fdesc, char *tbuf, char *rbuf);
+/* Creates a last.cfg file with default config */
 static int32_t 	check_config(const char *cfg_name, struct avail_args_t *avargs);
+/* Wrapper for getopt_long() */
 static int32_t 	get_parameters_from_args(int ac, char *av[], struct avail_args_t *avargs);
+/* Save last successful config to the last.cfg */
 static int32_t 	write_config_file(const char *cfg_name, struct avail_args_t *avargs);
 
 int32_t main(int argc, char *argv[])
@@ -368,9 +376,9 @@ static int32_t set_interface_attribs (int fd, int speed, int parity, int should_
 	return EXIT_SUCCESS;
 }
 
-static void exit_serial_port_not_specified(void)
+static inline void exit_serial_port_not_specified(void)
 {
-	puts("Need to specify a serial port with -D /dev/ttyXXX parameter!");
+	printf("Need to specify a serial port with -D /dev/ttyXXX parameter!\n");
 	exit(EINVAL);
 }
 

@@ -1,0 +1,29 @@
+This program configures sa818 walkietalkie.
+Available parameters:
+	-D, --portname, required argument.
+
+	-B, --bandwith, bandwith, default value 0 (12.5K). 1 is for 25K.
+
+	-T, --tfreq, optional_argument, transmit frequency, default value 150.0000MHz.
+
+	-R, --rfreq, optional_argument, receive frequency, default value 150.0000MHz.
+
+	-t, --txsub, optional_argument, transmit subcode, default value 0000.
+
+	-r, --rxsub, optional_argument, receive subcode, default value 0000.
+
+	-s, --squelch, optional_argument, squelch, default value 4.
+
+	-S, --scan_freq, optional_argument, scan frequency, default value 150.0000MHz.
+
+	-V, --volume, optional_argument, volume, default value 8.
+
+	-F, --filter, optional_argument, filters, default is 0,0,0 (all filters OFF).
+
+	-L, --tail, no_argument, reserved.
+
+	--rssi, get RSSI value.
+
+	--debug, print debug info, not transmit.
+
+	--version, get module firmware version.
