@@ -68,7 +68,7 @@ int32_t main(int argc, char *argv[])
 	static const char *DMOSETVOLUME = "AT+DMOSETVOLUME";
 	static const char *SCANFREQ = "S+";
 	static const char *SETFILTER = "AT+SETFILTER";
-	static const char *SETTAIL = "AT+SETTAIL";
+	/*static const char *SETTAIL = "AT+SETTAIL";*/
 	static const char *GETRSSI = "RSSI?";
 	static const char *GETVERSION = "AT+VERSION";
 
@@ -93,27 +93,24 @@ int32_t main(int argc, char *argv[])
 	{
 		exit_serial_port_not_specified();
 	} else {
-		fd = open (avail_args.s_portname, O_RDWR | O_NOCTTY | O_SYNC);
+		fd = open(avail_args.s_portname, O_RDWR | O_NOCTTY | O_SYNC);
 	}
 	if ((fd < 0) && (!debug_flag))
 	{
 		printf("Error when opening %s: %s", avail_args.s_portname, strerror (errno));
 		return -errno;
 	}
+
 	if (!debug_flag)
 	{
-		 /* set speed to 9600 bps, 8n1 (no parity), blocking */
+		/* set speed to 9600 bps, 8n1 (no parity), blocking */
 		set_interface_attribs(fd, B9600, 0, 1);
 	}
 
 	printf("Configuring sa818 module, wait...\n");
 
 	sprintf(transmit, "%s\r\n", DMOCONNECT);
-//	send_command(fd, transmit, received);
-	write(fd, transmit, strlen(transmit));
-	DELAY_TIME;
-	read(fd, received, sizeof(received));
-	DELAY_TIME;
+	send_command(fd, transmit, received);
 	if (EXIT_SUCCESS != check_command_result(received))
 	{
 		printf("%s failed!\n", DMOCONNECT);
@@ -124,14 +121,14 @@ int32_t main(int argc, char *argv[])
 	{
 		sprintf(transmit, "%s\r\n", GETRSSI);
 		send_command(fd, transmit, received);
-		printf("%s\n", received);
+		printf("%s", received);
 	}
 
 	if (version_flag)
 	{
 		sprintf(transmit, "%s\r\n", GETVERSION);
 		send_command(fd, transmit, received);
-		printf("%s\n", received);
+		printf("%s", received);
 	}
 
 	if (rssi_flag || version_flag)
@@ -173,6 +170,7 @@ int32_t main(int argc, char *argv[])
 		success = false;
 	}
 
+/*
 	sprintf(transmit, "%s=%d\r\n", SETTAIL, avail_args.tail);
 	send_command(fd, transmit, received);
 	if (EXIT_SUCCESS != check_command_result(received))
@@ -180,6 +178,7 @@ int32_t main(int argc, char *argv[])
 		printf("%s failed!\n", SETTAIL);
 		success = false;
 	}
+*/
 
 	if (true == success)
 	{
