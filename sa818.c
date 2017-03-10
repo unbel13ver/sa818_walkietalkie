@@ -50,6 +50,8 @@ static const struct option sa818_opts[] = {
 static int32_t 	debug_flag = 0;
 static int32_t 	rssi_flag = 0;
 static int32_t 	version_flag = 0;
+static int32_t 	scan_flag = 0;
+
 
 /* Serial port configuration */
 static int32_t 	set_interface_attribs(int fd, int speed, int parity, int should_block);
@@ -139,7 +141,19 @@ int32_t main(int argc, char *argv[])
 		printf("%s", received);
 	}
 
-	if (rssi_flag || version_flag)
+	if (scan_flag)
+	{
+		sprintf(transmit, "%s%3.4f\r\n", SCANFREQ, avail_args.scan_freq);
+		send_command(fd, transmit, received);
+		if (EXIT_SUCCESS != check_command_result(received))
+		{
+			printf("Radiochannel at the %3.4f MHz is NOT FOUND!\n", avail_args.scan_freq);
+		} else {
+			printf("Radiochannel at the %3.4f MHz is FOUND!\n", avail_args.scan_freq);
+		}
+	}
+
+	if (rssi_flag || version_flag || scan_flag)
 	{
 		return EXIT_SUCCESS;
 	}
@@ -151,15 +165,6 @@ int32_t main(int argc, char *argv[])
 	{
 		printf("%s failed!\n", DMOSETGROUP);
 		success = false;
-	}
-
-	sprintf(transmit, "%s%3.4f\r\n", SCANFREQ, avail_args.scan_freq);
-	send_command(fd, transmit, received);
-	if (EXIT_SUCCESS != check_command_result(received))
-	{
-		printf("Radiochannel at the %3.4f MHz is NOT FOUND!\n", avail_args.scan_freq);
-	} else {
-		printf("Radiochannel at the %3.4f MHz is FOUND!\n", avail_args.scan_freq);
 	}
 
 	sprintf(transmit, "%s=%d\r\n", DMOSETVOLUME, avail_args.volume);
@@ -268,6 +273,7 @@ static int32_t get_parameters_from_args(int ac, char *av[], struct avail_args_t 
 				break;
 			case 'S':
 				avargs->scan_freq = atof(optarg);
+				scan_flag = 1;
 				break;
 			case 'V':
 				avargs->volume = atoi(optarg);
